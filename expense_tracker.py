@@ -27,17 +27,17 @@ def add_expense():
     title = input("Expense name: ").strip()
 
     if not title:
-        print("Expense name cannot be empty.")
+        print("❌ Expense name cannot be empty.")
         return
 
     try:
         amount = float(input("Amount: "))
     except ValueError:
-        print("Please enter a valid amount.")
+        print("❌ Please enter a valid amount.")
         return
 
     if amount <= 0:
-        print("Amount must be greater than 0.")
+        print("❌ Amount must be greater than 0.")
         return
 
     category = input("Category: ").strip()
@@ -64,19 +64,42 @@ def add_expense():
 def view_expenses():
     expenses = load_expenses()
 
-    print("\n--- All Expenses ---")
+    print("\n" + "=" * 70)
+    print("                        EXPENSE HISTORY")
+    print("=" * 70)
 
     if not expenses:
         print("No expenses found.")
+        print("=" * 70)
         return
 
-    for expense in expenses:
+    print(
+        f"{'No.':<5}"
+        f"{'Date':<15}"
+        f"{'Expense':<20}"
+        f"{'Category':<15}"
+        f"{'Amount':>10}"
+    )
+
+    print("-" * 70)
+
+    total = 0
+
+    for index, expense in enumerate(expenses, start=1):
         print(
-            f"{expense['date']} | "
-            f"{expense['title']} | "
-            f"₹{expense['amount']:.2f} | "
-            f"{expense['category']}"
+            f"{index:<5}"
+            f"{expense['date']:<15}"
+            f"{expense['title']:<20}"
+            f"{expense['category']:<15}"
+            f"₹{expense['amount']:>8.2f}"
         )
+
+        total += expense["amount"]
+
+    print("-" * 70)
+    print(f"Total Expenses: {len(expenses)}")
+    print(f"Total Spending: ₹{total:.2f}")
+    print("=" * 70)
 
 
 def main():
